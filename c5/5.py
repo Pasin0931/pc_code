@@ -202,19 +202,64 @@
 
 
 
-def factorial(x):
-    sum_each_fact = []
+# def factorial(x):
+#     sum_each_fact = []
+#     for i in range(1, x + 1):
+#         res = 1
+#         for j in range(i, 0, -1):
+#             # print(j, end=" ")
+#             res = res * j
+#         print(f"{i}! = {res}")
+#         sum_each_fact.append(res)
+#     return sum_each_fact
 
-    for i in range(1, x + 1):
-        res = 1
-        for j in range(i, 0, -1):
-            # print(j, end=" ")
-            res = res * j
-        print(f"{i}! = {res}")
-        sum_each_fact.append(res)
+# k = int(input("Input k: "))
+# result = sum(factorial(k))
+# print(f"Summation of factorial 1!-{k}! = {result}")
 
-    return sum_each_fact
 
-k = int(input("Input k: "))
-result = sum(factorial(k))
-print(f"Summation of factorial 1!-{k}! = {result}")
+def list_factors(n):
+    res = ""
+    for i in range(1, n+1):
+        if n % i == 0:
+            res += f"{i}, "
+    return res
+
+def find_sum_and_num_factors(n):
+    res = []
+    count = 0
+
+    for i in range(1, n+1):
+        if n % i == 0:
+            res.append(i)
+            count += 1
+    return sum(res), count
+
+user_in = int(input("Enter positive number: "))
+factor_res = list_factors(user_in)
+
+print(f"Factors of {user_in} are {factor_res}")
+
+sum_fact, count = find_sum_and_num_factors(user_in)
+
+print(f"Number of factors is {count}")
+print(f"Sum of {factor_res}is {sum_fact}")
+
+is_prime = True
+
+if user_in <= 1:
+    is_prime = False
+elif user_in == 2:
+    is_prime = True
+elif user_in % 2 == 0:
+    is_prime = False
+else:
+    for i in range(3, int(user_in**0.5) + 1, 2):
+        if user_in % i == 0:
+            is_prime = False
+            break
+
+if is_prime == True:
+    print(f"{user_in} is a prime number")
+else:
+    print(f"{user_in} is not a prime number")
