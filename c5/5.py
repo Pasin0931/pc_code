@@ -260,6 +260,6 @@ else:
             break
 
 if is_prime == True:
-    print(f"{user_in} is a prime number")
+    print(f"{user_in} is prime number")
 else:
-    print(f"{user_in} is not a prime number")
+    print(f"{user_in} is not prime number")

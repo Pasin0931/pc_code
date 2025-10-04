@@ -183,11 +183,11 @@
 
 # board = [["." for _ in range(3)] for _ in range(3)]
 # print(board)
-board = [["." for _ in range(3)] for _ in range(3)]
-i = 0
-while i < 3:
-    for j in range(3):
-        if i == 1 and j == 2:
-            board[i][j] = "X"
-    i += 1
-print(board[1])
+# board = [["." for _ in range(3)] for _ in range(3)]
+# i = 0
+# while i < 3:
+#     for j in range(3):
+#         if i == 1 and j == 2:
+#             board[i][j] = "X"
+#     i += 1
+# print(board[1])
