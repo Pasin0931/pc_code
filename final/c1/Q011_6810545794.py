@@ -31,14 +31,14 @@ for key, value in db.items():
 
         t_in.append(value[0])
 
-        s1 = f"{value[1]} {key}"
+        s1 = f"{value[1]} {key}:"
         s2 = f"{value[0]:.2f}"
         print(f"{s1:<17}${s2:>8}")
     else:
 
         t_expense.append(value[0])
 
-        s1 = f"{value[1]} {key}"
+        s1 = f"{value[1]} {key}:"
         s2 = f"{value[0]:.2f}"
         print(f"{s1:<17}${s2:>8}")
 

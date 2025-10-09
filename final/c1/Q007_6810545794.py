@@ -8,9 +8,10 @@ count = 1
 
 for i in range(nm_stu):
     name = input(f"Enter name for student {count}: ")
-    score = input(f"Enter scores for Alice {name}: ").split()
+    score = input(f"Enter scores for {name}: ").split()
 
-    mapped_sc = list(map(int, score))
+    mapped_sc = list(map(float, score))
+    mapped_sc = [i for i in mapped_sc if i >= 0]
 
     db[name] = mapped_sc
     count += 1

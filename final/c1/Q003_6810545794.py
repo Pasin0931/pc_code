@@ -1,6 +1,6 @@
 # Name: Pasin Makcharoen # Student ID: 6810545794
 
-in_ = int(input("Enter a non - negative integer: "))
+in_ = int(input("Enter a non-negative integer: "))
 
 if in_ < 0:
     print("Invalid input")
