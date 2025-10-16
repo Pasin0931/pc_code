@@ -28,20 +28,15 @@ while True:
         break
     c_contact += 1
     print()
-    
-# print(contacts_)
-dt = "Name,Email,Phone"
-for i in contacts_:
-    dt += f"\n{i[0]},{i[1]},{i[2]}"
-    
-# print()
-# print(dt)
-# print()
 
 to_path = Path.cwd() / "contacts.csv"
-fp = open(to_path, mode="a", encoding="utf-8")
+fp = open(to_path, mode="w", encoding="utf-8", newline="")
 writer = csv.writer(fp)
-writer.writerow(dt)
+
+writer.writerow(["Name", "Email", "Phone"])
+for i in contacts_:
+    writer.writerow(i)
+
 fp.close()
 
 print("\nContact list saved to contacts.csv.")

@@ -53,7 +53,7 @@ if state == True:
     # print(joined_word)
     
     this_path = Path.cwd() / f"{in_4}"
-    fp = open(this_path, "w")
+    fp = open(this_path, mode="w", encoding="utf-8")
     fp.write(joined_word)
     fp.close()
 
