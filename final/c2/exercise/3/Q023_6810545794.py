@@ -1,3 +1,5 @@
+# Name: Pasin Makcharoen # Student ID: 6810545794
+
 from pathlib import Path
 
 file_ = open("journal.log", "a")

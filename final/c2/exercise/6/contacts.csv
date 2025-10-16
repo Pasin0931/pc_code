@@ -1,0 +1,4 @@
+N,a,m,e,",",E,m,a,i,l,",",P,h,o,n,e,"
+",A,l,i,c,e, ,S,m,i,t,h,",",a,l,i,c,e,@,e,x,a,m,p,l,e,.,c,o,m,",",1,1,1,-,2,2,2,-,3,3,3,3,"
+",B,o,b, ,J,o,h,n,s,o,n,",",b,o,b,@,e,x,a,m,p,l,e,.,c,o,m,",",4,4,4,-,5,5,5,-,6,6,6,6
+"Name,Email,Phone",Alice,"Smith,alice@example.com,111-222-3333",Bob,"Johnson,bob@example.com,444-555-6666"
