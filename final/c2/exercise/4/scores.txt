@@ -1,5 +1,5 @@
 Alice,88
-Bob,92
+Bob,95.50
 Charlie,78
-David,95
+David,95.50
 Eve,85

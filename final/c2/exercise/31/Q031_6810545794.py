@@ -13,167 +13,97 @@ config_ = {
 }
 
 STATE = True
+contents_ = []
 
 in_ = input("Load from 'file' or 'manual' input? ")
 
 if in_ == "file":
-    name_ = input("Enter filename: ")
-    path_ = Path.cwd() / f"{name_}"
-    
+    name_ = input("Enter filename: ").strip()
+    path_ = Path(name_)
     if path_.exists():
-        print("Configuration file is valid.")
-        print("Parsed Data:")
-
-        fp = open(name_, 'r', encoding="utf-8")
-        contents_ = fp.read()
-        contents_ = contents_.split()
-
-        contents_.pop(0)
-        contents_.pop(0)
-        contents_.pop(0)
-
-        port_ = contents_[0].split("=")[1]
-        allowed_g = contents_[1].split("=")[1].split(",")
-        re_arrange = ""
-        for i in contents_[2].split("e=")[1]:
-            if i != "{" and i != "}":
-                re_arrange += i
-
-        db_values = re_arrange.split(";")
-        for i in range(len(db_values)):
-            db_values[i] = db_values[i].split("=")[1]
-
-        config_["port"] = port_
-        config_["allowed_users"] = allowed_g
-        config_["database"] = {
-            "user": db_values[0],
-            "password": db_values[1],
-            "timeout": db_values[2]
-        }
-
-        print(f"port: {config_['port']}")
-        
-        n_ = ",".join(config_["allowed_users"])
-        print(f"allowed_users: {n_}")
-
-        print("database:")
-        print(f"  user: {config_['database']['user']}")
-        print(f"  password: {config_['database']['password']}")
-        print(f"  timeout: {config_['database']['timeout']}")
+        with open(path_, 'r', encoding="utf-8") as fp:
+            for a_ in fp:
+                aph_ = a_.strip()
+                if not aph_ or aph_.startswith("#"):
+                    continue
+                contents_.append(aph_)
     else:
         print(f"Error: File '{name_}' not found.")
-
-    # print(config_)
-
+        STATE = False
 elif in_ == "manual":
     print("Enter configuration (type 'DONE' to finish):")
-
     while True:
-        usr_in = input("")
-
+        usr_in = input("").strip()
         if usr_in == "DONE":
             break
-
-        for_db = usr_in.split("e=")
-        usr_in = usr_in.split("=")
-
-        if usr_in[0] == "port":
-            usr_in.pop(0)
-            usr_in = usr_in[0]
-
-            config_["port"] = usr_in
-
-            # print(usr_in)
-            # print(config_)
-
-        elif usr_in[0] == "allowed_users":
-            usr_in.pop(0)
-            usr_in = usr_in[0].split(",")
-
-            config_["allowed_users"] = usr_in
-
-            # print(usr_in)
-            # print(config_)
-
-        elif for_db[0] == "databas":
-            for_db.pop(0)
-            for_db = for_db[0]
-
-            re_arrange = ""
-            for i in for_db:
-                if i != "{" and i != "}":
-                    re_arrange += i
-
-            for_db = re_arrange.split(";")
-
-            for i in range(len(for_db)):
-                for_db[i] = for_db[i].split("=")
-
-                if for_db[i][0] in config_["database"].keys():
-                    config_["database"][for_db[i][0]] = for_db[i][1]
-
-            # print(for_db)
-            # print(config_)
-
-        else:
+        if not usr_in or usr_in.startswith("#"):
             continue
+        contents_.append(usr_in)
 
+if STATE:
+    for a_ in contents_:
+        a_ = a_.replace(" ", "")
+        if a_.startswith("port="):
+            b_ = a_.split("=")[1]
+            if not b_.isdigit() or int(b_) < 1 or int(b_) > 65535:
+                print("Validation Error: Port must be an integer between 1 and 65535.")
+                STATE = False
+                break
+            config_["port"] = b_
+        elif a_.startswith("allowed_users="):
+            c_ = a_.split("=")[1]
+            d_ = c_.split(",")
+            if not d_ or any(x == "" for x in d_):
+                print("Validation Error: Allowed users list must not be empty.")
+                STATE = False
+                break
+            config_["allowed_users"] = d_
+        elif a_.startswith("database="):
+            if "user=" not in a_ or "password=" not in a_:
+                print("Validation Error: Database dictionary must contain both 'user' and 'password' keys.")
+                STATE = False
+                break
+            e_ = a_.replace("database={", "").replace("}", "")
+            f_ = e_.split(";")
+            for g_ in f_:
+                h_ = g_.split("=")
+                if len(h_) == 2:
+                    if h_[0] == "user":
+                        config_["database"]["user"] = h_[1]
+                    elif h_[0] == "password":
+                        config_["database"]["password"] = h_[1]
+                    elif h_[0] == "timeout":
+                        if not h_[1].isdigit() or int(h_[1]) <= 0:
+                            print("Validation Error: Database timeout must be a positive integer.")
+                            STATE = False
+                            break
+                        config_["database"]["timeout"] = h_[1]
+            if not STATE:
+                break
+
+if STATE:
     if config_["port"] == "" or int(config_["port"]) < 1 or int(config_["port"]) > 65535:
         print("Validation Error: Port must be an integer between 1 and 65535.")
         STATE = False
-
-    elif config_["allowed_users"] == [""] or config_["allowed_users"] == "":
+    elif not config_["allowed_users"] or any(x == "" for x in config_["allowed_users"]):
         print("Validation Error: Allowed users list must not be empty.")
         STATE = False
-
     elif config_["database"]["user"] == "" or config_["database"]["password"] == "":
         print("Validation Error: Database dictionary must contain both 'user' and 'password' keys.")
         STATE = False
-
-    elif int(config_["database"]["timeout"]) < 0:
+    elif not config_["database"]["timeout"].isdigit() or int(config_["database"]["timeout"]) <= 0:
         print("Validation Error: Database timeout must be a positive integer.")
         STATE = False
 
-    if STATE == True:
-        WORD = "# Server configuration"
+if STATE:
+    print("Configuration file is valid.")
+    print("Parsed Data:")
+    print(f"port: {config_['port']}")
+    n_ = ",".join(config_["allowed_users"])
+    print(f"allowed_users: {n_}")
+    print("database:")
+    print(f"  user: {config_['database']['user']}")
+    print(f"  password: {config_['database']['password']}")
+    print(f"  timeout: {config_['database']['timeout']}")
 
-        print("Configuration file is valid.")
-        print("Parsed Data:")
-
-        for k, v in config_.items():
-            if k == "port":
-                print(f"port: {v}")
-                WORD += f"\nport={v}"
-
-            elif k == "allowed_users":
-                this_v = ",".join(v)
-                print(f"allowed_users: {this_v}")
-                WORD += f"\nallowed_users={this_v}"
-
-            elif k == "database":
-                here_w = "\ndatabase={"
-                print("database:")
-                for tk, tv in config_["database"].items():
-                    if tk == "user":
-                        print(f"  user: {tv}")
-                        a = f"user={tv};"
-
-                    elif tk == "password":
-                        print(f"  password: {tv}")
-                        b = f"password={tv};"
-
-                    elif tk == "timeout":
-                        print(f"  timeout: {tv}")
-                        c = f"timeout={tv}"
-                here_w += a
-                here_w += b
-                here_w += c
-                here_w += "}"
-
-                WORD += here_w
-        
-        w_ = Path.cwd() / "manual.conf"
-        fp_ = open(w_, mode="w", encoding="utf-8")
-        fp_.write(WORD)
-        fp_.close()
 

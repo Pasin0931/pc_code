@@ -22,10 +22,13 @@ for each_ in reader:
     stock.append(each_[3])
 
 in_ = input("Enter category to filter by: ")
-if in_ not in cata:
+if in_.title() not in cata:
     print(f"No items found in category \'{in_}\'.")
 else:
     print(f"Items in category \'{in_}\': ")
+    in_ = in_.title()
     for i in range(len(id_)):
         if cata[i] == in_:
             print(f"Item: {name_[i]}, Stock: {stock[i]}")
+
+fp.close()

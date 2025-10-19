@@ -10,6 +10,7 @@ for i in range(len(this_)):
     this_[i] = this_[i].split(",")
 
 students = {}
+file_.close()
 
 for i in this_:
     students[i[0]] = i[1]
@@ -21,16 +22,15 @@ total_stu = 0
 score_stu = 0
 
 for key, value in students.items():
-    score_stu += int(value)
+    score_stu += float(value)
     total_stu += 1
     
-    if int(value) >= score_max:
-        score_max = int(value)
+    if float(value) > float(score_max):
+        score_max = value
         name_max = key
         
 avg = score_stu / total_stu
-avg = f"{avg:.2f}"
         
 print("--- Score Analysis ---")
-print(f"Class Average: {avg}")
+print(f"Class Average: {avg:.2f}")
 print(f"Highest Score: {name_max} with {score_max} points.")

@@ -22,4 +22,4 @@ for i in contents_:
     
 print("--- Regional Sales Summary ---")
 for key, value in regions.items():
-    print(f"{key}: {value:.2f}")
+    print(f"{key}: ${value:.2f}")
