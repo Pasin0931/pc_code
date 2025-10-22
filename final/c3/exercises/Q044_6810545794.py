@@ -15,7 +15,7 @@ class Circle(Shape):
         self.radius = radius
         
     def get_area(self):
-        area_ = math.pi * math.pow(2, self.radius)
+        area_ = math.pi * self.radius**2
         return area_
     
 class Rectangle(Shape):
@@ -45,14 +45,29 @@ in_ = input("Create (circle/rectangle/triangle): ")
 if in_ in shapes_:
     if in_ == "circle":
         col_ = input("Enter color: ")
-        w_ = input("Enter radius: ")
-        hei_ = input("Enter height: ")
+        radi_ = float(input("Enter radius: "))
+
+        this_ = Circle(col_, radi_)
+        
+        print(f"Info: Color: {col_}, Area: {this_.get_area():.2f}")
         
     elif in_ == "rectangle":
-    
+        col_ = input("Enter color: ")
+        wid_ = float(input("Enter width: "))
+        hei_ = float(input("Enter height: "))
+
+        this_ = Rectangle(col_, wid_, hei_)
+
+        print(f"Info: Color: {col_}, Area: {this_.get_area():.2f}")
             
     elif in_ == "triangle":
-    
+        col_ = input("Enter color: ")
+        base_ = float(input("Enter base: "))
+        hei_ = float(input("Enter height: "))
+
+        this_ = Triangle(col_, base_, hei_)
+
+        print(f"Info: Color: {col_}, Area: {this_.get_area():.2f}")
     
 else:
     print("Invalid input")
