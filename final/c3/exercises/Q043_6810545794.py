@@ -47,15 +47,17 @@ if status == True:
             print("Invalid command")
             continue
         
-        elif com_[0] in ("deposit", "withdraw"):
-            if len(com_) != 2:
+        elif com_[0] in ("deposit", "withdraw") and len(com_) == 2:
+            try:
+                com_[1] = float(com_[1])
+            except ValueError:
                 print("Invalid command")
                 continue
             
-            elif com_[0] == "deposit":
+            if com_[0] == "deposit":
                 state_ = bank_.deposit(com_[1])
                 if state_ == True:
-                    print(f"Deposit successful. New balance: {bank_.get_balance()}")
+                    print(f"Deposit successful. New balance: {bank_.get_balance():.2f}")
                 else:
                     print(f"Invalid deposit amount.")
                     
@@ -66,5 +68,13 @@ if status == True:
                 else:
                     print(f"Insufficient funds or invalid amount.")
                     
-        elif com_[0] in some_command:
+        elif com_[0] in some_command and len(com_) == 1:
+            if com_[0] == "balance":
+                print(f"Current balance: {bank_.get_balance():.2f}")
+            elif com_[0] == "exit":
+                print("Goodbye.")
+                break
             
+        else:
+            print("Invalid command")
+            continue

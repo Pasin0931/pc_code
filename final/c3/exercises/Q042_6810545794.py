@@ -30,7 +30,7 @@ class Motorcycle:
 bike = Motorcycle()
 commands = ["start", "accel", "mileage", "stop", "status", "exit"]
 invalid_ = "Invalid command. Please try again."
-    
+
 while True:
     in_ = input("Enter command: ").lower().strip().split()
     
