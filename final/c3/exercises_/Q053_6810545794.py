@@ -17,8 +17,10 @@ class Vehicle:
         if amount > 0:
             self.speed -= amount
             if self.speed < 0:
-                self.speed == 0
+                self.speed = 0
             return f"{self.brand} brakes."
+        else:
+            return None
         
     def get_status(self):
         return f"{self.brand} Speed: {self.speed}"
@@ -75,6 +77,9 @@ long_ = ["accel", "brake"]
 short_ = ["status", "exit"]
 invalid = "Invalid command."
 
+all_v = [i.brand.lower() for i in vehicles]
+# print(all_v)
+
 while True:
     in_ = input("Enter command: ").strip().lower()
     
@@ -87,11 +92,62 @@ while True:
             print(invalid)
             continue
         
-        if in_[0] in long_:
-            if in_[0] == "accel" and type(in_[3]) in (int, float):
-                for i in vehicles:
-                    if i.brand == in_[1]:
-                        
-            
-            elif in_[0] == "brake":
+        if in_[0].lower() in long_ and len(in_) == 3:
+            try:
+                if in_[0].lower() == "accel":
+
+                    if in_[1].lower() not in all_v:
+                        print("Vehicle not found.")
+                        continue
+
+                    in_[2] = int(in_[2])
+
+                    txts = []
+
+                    for i in vehicles:
+                        if i.brand.lower() == in_[1]:
+                            a_ = i.accelerate(in_[2])
+                            print(a_)
+                        txts.append(f"Status: {i.get_status()}")
+                    
+                    print("\n".join(txts))
+
+                elif in_[0].lower() == "brake":
+
+                    if in_[1].lower() not in all_v:
+                        print("Vehicle not found.")
+                        continue
+
+                    in_[2] = int(in_[2])
+
+                    txts = []
+
+                    for i in vehicles:
+                        if i.brand.lower() == in_[1]:
+                            a_ = i.brake(in_[2])
+                            print(a_)
+                        txts.append(f"Status: {i.get_status()}")
+                    
+                    print("\n".join(txts))
                 
+                else:
+                    print(invalid)
+                    continue
+
+            except ValueError:
+                print(invalid)
+                continue
+
+
+        elif in_[0].lower() in short_ and len(in_) == 1:
+            if in_[0].lower() == "exit":
+                print("Goodbye.")
+                break
+            
+            elif in_[0].lower() == "status":
+                for i in vehicles:
+                    print(f"Status: {i.get_status()}")
+
+        else:
+            print(invalid)
+            continue
